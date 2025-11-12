@@ -1,0 +1,15 @@
+.slide-mas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 450px; /* tu altura */
+}
+
+.btn-mas {
+  --border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  font-size: 24px;
+  --background: var(--ion-color-primary);
+  color: white;
+}

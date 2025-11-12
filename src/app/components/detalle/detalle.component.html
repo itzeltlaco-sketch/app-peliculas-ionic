@@ -1,0 +1,113 @@
+<ion-content>
+
+  <!-- 🎬 Título -->
+  <ion-label class="titulo">
+    <h1 class="titulo-texto">{{ pelicula.title }}</h1>
+  </ion-label>
+
+  <!-- 🖼️ Imagen principal -->
+  <img [src]="pelicula.backdrop_path | imagen" *ngIf="pelicula.backdrop_path" class="img-principal">
+
+  <!-- 📊 Información principal -->
+  <ion-grid>
+    <ion-row>
+
+      <ion-col size="4" class="poster-detalle-sobre">
+        <ion-card class="poster">
+          <img [src]="pelicula.poster_path | imagen" 
+               class="poster"
+               *ngIf="pelicula.poster_path">
+        </ion-card>
+      </ion-col>
+
+      <ion-col>
+        <ion-item lines="none">
+          <ion-icon slot="start" name="thumbs-up-outline" color="primary"></ion-icon>
+          <ion-label>Rating</ion-label>
+          <ion-note slot="end" color="primary">{{ pelicula.vote_average }}</ion-note>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-icon slot="start" name="people-outline" color="primary"></ion-icon>
+          <ion-label>Votos</ion-label>
+          <ion-note slot="end" color="primary">{{ pelicula.vote_count }}</ion-note>
+        </ion-item>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+  <!-- 📖 Descripción -->
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <ion-label class="descripcion">{{ pelicula.overview | slice:0:oculto }}...</ion-label>
+        <ion-label color="primary"
+                   class="leer-mas"
+                   (click)="oculto = 5000"
+                   *ngIf="oculto !== 5000">Leer más</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <!-- 🏷️ Géneros -->
+    <ion-row>
+      <ion-col size="12">
+        <ion-chip *ngFor="let genero of pelicula.genres" color="primary" class="chip-genero">
+          <ion-label>{{ genero.name }}</ion-label>
+        </ion-chip>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- 🎭 Actores -->
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col>
+        <ion-label><h2 class="titulo-seccion">Actores</h2></ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- 🎞️ Carrusel horizontal de actores -->
+  <swiper-container
+    [slidesPerView]="3.3"
+    [spaceBetween]="10"
+    [freeMode]="true"
+    [loop]="false">
+
+    <swiper-slide *ngFor="let actor of actores">
+      <ion-card class="card-actor">
+        <img *ngIf="actor.profile_path; else sinFoto"
+             [src]="actor.profile_path | imagen"
+             class="actor-img">
+        <ng-template #sinFoto>
+          <img src="/assets/no-avatar.jpg" class="actor-img">
+        </ng-template>
+
+        <ion-label class="actor-name">{{ actor.name }}</ion-label>
+      </ion-card>
+    </swiper-slide>
+  </swiper-container>
+
+</ion-content>
+
+<!-- 🔙 Footer -->
+<ion-footer no-border>
+  <ion-toolbar >
+
+    <ion-buttons slot="start">
+      <ion-button (click)="regresar()" fill="clear">
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+        <ion-label>Regresar</ion-label>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="favorito()">
+        <ion-label>Favorito</ion-label>
+        <ion-icon slot="end" [name]="estrella"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-footer>
